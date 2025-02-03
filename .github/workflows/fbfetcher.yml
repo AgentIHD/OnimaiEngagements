@@ -29,5 +29,6 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@users.noreply.github.com"
           git add output.txt
-          git commit -m "Update output.txt with latest Facebook data"
-          git push
+          git commit --amend --no-edit --date "$(date)"
+          git push --force
+      
