@@ -14,6 +14,10 @@ def get_facebook_data():
     url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,message,created_time,likes.summary(true),comments.summary(true)&access_token={ACCESS_TOKEN}"
     response = requests.get(url)
     data = response.json()
+    
+    # Print out the response status and content for debugging
+    print(f"Status Code: {response.status_code}")
+    print(f"Response: {response.json()}")
 
 
     # If everything is fine, write the data to output.txt
