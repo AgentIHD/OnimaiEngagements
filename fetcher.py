@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 
-ACCESS_TOKEN = os.getenv("FB_TOK")  # Get Facebook token from environment variable
+ACCESS_TOKEN = os.getenv("TOK_FB")  # Get Facebook token from environment variable
 PAGE_ID = "your_page_id"  # Replace with your actual Facebook Page ID
 
 # Kill the script if the FB_TOK is not set
