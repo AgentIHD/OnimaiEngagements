@@ -5,10 +5,6 @@ import requests
 ACCESS_TOKEN = os.getenv("TOK_FB")  # Get Facebook token from environment variable
 PAGE_ID = "your_page_id"  # Replace with your actual Facebook Page ID
 
-# Kill the script if the FB_TOK is not set
-if not ACCESS_TOKEN:
-    print("Error: Facebook token (FB_TOK) not found. Terminating script.")
-    sys.exit(1)
 
 def get_facebook_data():
     url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,message,created_time,likes.summary(true),comments.summary(true)&access_token={ACCESS_TOKEN}"
