@@ -24,8 +24,10 @@ jobs:
           FB_TOK: ${{ secrets.FB_TOK }}
         run: python fetcher.py
 
-      - name: Upload Output File
-        uses: actions/upload-artifact@v4
-        with:
-          name: fb_output
-          path: output.txt
+      - name: Commit output.txt to Repository
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git add output.txt
+          git commit -m "Update output.txt with latest Facebook data"
+          git push
