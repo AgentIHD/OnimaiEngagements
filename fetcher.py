@@ -40,7 +40,7 @@ def get_facebook_data():
             total_views += views
 
     # Check if there is another page of posts
-     url = data.get("paging", {}).get("next", None)
+    url = data.get("paging", {}).get("next", None)
 
     # Output the totals
     with open("output.txt", "w", encoding="utf-8") as file:
