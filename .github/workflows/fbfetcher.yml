@@ -1,7 +1,7 @@
 name: Fetch Facebook Data
 
 on:
-  workflow_dispatch:  # Allows manual run in GitHub Actions
+  workflow_dispatch:  # Allows manual execution in GitHub Actions
 
 jobs:
   fetch_data:
@@ -21,5 +21,11 @@ jobs:
 
       - name: Run Fetch Script
         env:
-          FB_TOK: ${{ secrets.TOK_FB}}
-        run: python fetch_fb_data.py
+          FB_TOK: ${{ secrets.FB_TOK }}
+        run: python fetcher.py
+
+      - name: Upload Output File
+        uses: actions/upload-artifact@v4
+        with:
+          name: fb_output
+          path: output.txt
