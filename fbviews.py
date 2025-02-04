@@ -11,7 +11,7 @@ if not ACCESS_TOKEN:
 
 def get_facebook_views():
     total_views = 0
-    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id&access_token={ACCESS_TOKEN}&limit=100"
+    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id&access_token={ACCESS_TOKEN}&limit=1000"
 
     print("Starting Facebook Views Fetcher...")
 
