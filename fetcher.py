@@ -16,7 +16,12 @@ def get_facebook_data():
     total_views = 0
 
     # Initial URL to get posts, including reactions, comments, and views
-    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,message,created_time,likes.summary(true),comments.summary(true),insights.metric(post_impressions)&access_token={ACCESS_TOKEN}"
+    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,message,created_time,likes.summary(true),comments.summary(true)&access_token={ACCESS_TOKEN}&limit=100"
+    url += "&fields=insights.metric(post_impressions)"
+    
+    insights_response = requests.get(insights_url)
+    insights_response = requests.get(insights_url)
+    insights_data = insights_response.json()
     
     while url:  # Loop to handle pagination silently
         response = requests.get(url)
