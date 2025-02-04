@@ -1,0 +1,32 @@
+name: Fetch Views
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  fetch_views:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Facebook Views Fetcher
+        env:
+          TOK_FB: ${{ secrets.TOK_FB }}
+        run: python fbviews.py
+
+      - name: Commit and Push Views Output
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add viewsoutput.txt
+          git commit -m "Updated viewsoutput.txt" || echo "No changes to commit"
+          git push
