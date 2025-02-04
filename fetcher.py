@@ -15,13 +15,8 @@ def get_facebook_data():
     total_comments = 0
     total_views = 0
 
-    # Initial URL to get posts, including reactions, comments, and views
-    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,message,created_time,likes.summary(true),comments.summary(true)&access_token={ACCESS_TOKEN}&limit=100"
-    url += "&fields=insights.metric(post_impressions)"
-    
-    insights_response = requests.get(insights_url)
-    insights_response = requests.get(insights_url)
-    insights_data = insights_response.json()
+    # Initial URL to get posts, including reactions and comments (WITHOUT views)
+    url = f"https://graph.facebook.com/v18.0/{PAGE_ID}/posts?fields=id,likes.summary(true),comments.summary(true)&access_token={ACCESS_TOKEN}&limit=100"
     
     while url:  # Loop to handle pagination silently
         response = requests.get(url)
@@ -29,16 +24,22 @@ def get_facebook_data():
 
         if "data" in data:
             for post in data["data"]:
+                post_id = post.get("id")
                 likes = post.get("likes", {}).get("summary", {}).get("total_count", 0)
                 comments = post.get("comments", {}).get("summary", {}).get("total_count", 0)
                 views = 0  # Default if no views data found
 
-                # Get the views (impressions) for the post
-                if "insights" in post:
-                    for insight in post["insights"]["data"]:
+                # Fetch post impressions separately
+                insights_url = f"https://graph.facebook.com/v18.0/{post_id}/insights?metric=post_impressions&access_token={ACCESS_TOKEN}"
+                insights_response = requests.get(insights_url)
+                insights_data = insights_response.json()
+
+                if "data" in insights_data:
+                    for insight in insights_data["data"]:
                         if insight["name"] == "post_impressions":
                             views = insight["values"][0]["value"]
 
+                # Add to totals
                 total_reactions += likes
                 total_comments += comments
                 total_views += views
@@ -46,7 +47,7 @@ def get_facebook_data():
         # Check if there is another page of posts (pagination)
         url = data.get("paging", {}).get("next", None)
 
-    # Output the totals to output.txt without logging anything to the console
+    # Output the totals to output.txt
     with open("output.txt", "w", encoding="utf-8") as file:
         output = (
             f"Total Reactions: {total_reactions}\n"
